@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>癒シス (Yushisu) | 心ほどける香りと、温もりのある暮らし</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            light:  '#FDFBF7',
+                            cream:  '#F9F4EC',
+                            beige:  '#EFE6D8',
+                            sand:   '#D9C9B4',
+                            sage:   '#9DAF98',
+                            green:  '#6B8C6A',
+                            forest: '#3E5C3D',
+                            dark:   '#2B3829',
+                            gold:   '#C9A96E',
+                            mist:   '#E8EDE8'
+                        }
+                    },
+                    fontFamily: {
+                        display: ['"Cormorant Garamond"', '"Noto Serif JP"', 'serif'],
+                        serif:   ['"Noto Serif JP"', 'serif'],
+                        sans:    ['Inter', 'sans-serif'],
+                    },
+                    letterSpacing: {
+                        'ultra': '0.25em',
+                        'super': '0.35em',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* ===== ベーススタイル ===== */
+        html { font-size: 16px; }
+        body {
+            font-family: 'Inter', 'Noto Serif JP', sans-serif;
+            background-color: #FDFBF7;
+            color: #2B3829;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== フェードインアニメーション ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* ===== ヒーロー背景アニメーション ===== */
+        @keyframes slowZoom {
+            0%, 100% { transform: scale(1); }
+            50%       { transform: scale(1.06); }
+        }
+        .hero-bg { animation: slowZoom 30s ease-in-out infinite; }
+
+        /* ===== スクロールライン ===== */
+        @keyframes scrollLine {
+            0%   { transform: scaleY(0); transform-origin: top; }
+            50%  { transform: scaleY(1); transform-origin: top; }
+            51%  { transform: scaleY(1); transform-origin: bottom; }
+            100% { transform: scaleY(0); transform-origin: bottom; }
+        }
+        .scroll-line { animation: scrollLine 2s ease-in-out infinite; }
+
+        /* ===== ナビゲーション下線 ===== */
+        .nav-link {
+            position: relative;
+            padding-bottom: 4px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: #6B8C6A;
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        /* ===== セクション区切り線 ===== */
+        .section-rule {
+            display: block;
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, #C9A96E, transparent);
+            margin: 1.5rem auto 0;
+        }
+
+        /* ===== カードホバー ===== */
+        .service-card {
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 60px rgba(43, 56, 41, 0.12);
+        }
+
+        /* ===== ギャラリーオーバーレイ ===== */
+        .gallery-item .overlay {
+            background: linear-gradient(to top, rgba(43,56,41,0.75) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .gallery-item:hover .overlay { opacity: 1; }
+        .gallery-item img {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .gallery-item:hover img { transform: scale(1.08); }
+
+        /* ===== 概要テーブル ===== */
+        .info-row:last-child { border-bottom: none; }
+
+        /* ===== テキストグラデーション ===== */
+        .text-gradient {
+            background: linear-gradient(135deg, #6B8C6A 0%, #C9A96E 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ===== ヒーロー装飾線 ===== */
+        .hero-deco-line {
+            width: 1px;
+            height: 80px;
+            background: linear-gradient(to bottom, transparent, #6B8C6A, transparent);
+        }
+
+        /* ===== コンセプト画像フレーム ===== */
+        .concept-frame::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            right: 12px;
+            bottom: 12px;
+            border: 1px solid rgba(201, 169, 110, 0.35);
+            border-radius: 1rem;
+            z-index: -1;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .concept-frame:hover::before {
+            transform: translate(6px, 6px);
+        }
+
+        /* ===== フッターリンク ===== */
+        .footer-link {
+            position: relative;
+            padding-bottom: 2px;
+        }
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: #C9A96E;
+            transition: width 0.3s ease;
+        }
+        .footer-link:hover::after { width: 100%; }
+
+        /* ===== ボタン共通 ===== */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 2rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            color: #FDFBF7;
+            background-color: #6B8C6A;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #3E5C3D;
+            box-shadow: 0 8px 24px rgba(107, 140, 106, 0.35);
+            transform: translateY(-1px);
+        }
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 2rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            color: #2B3829;
+            background-color: transparent;
+            border: 1px solid rgba(107, 140, 106, 0.4);
+            transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+        }
+        .btn-outline:hover {
+            border-color: #6B8C6A;
+            background-color: rgba(107, 140, 106, 0.06);
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden selection:bg-brand-sage/40 selection:text-brand-dark">
+
+<!-- ============================================================
+     ヘッダー / ナビゲーション
+============================================================ -->
+<header id="main-header"
+        class="fixed top-0 left-0 w-full z-50 transition-all duration-500
+               bg-brand-light/85 backdrop-blur-lg border-b border-brand-beige/60">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 py-4 flex justify-between items-center">
+
+        <!-- ロゴ -->
+        <a href="#" class="flex items-center gap-3 group" aria-label="癒シス トップページ">
+            <span class="font-display text-2xl tracking-ultra text-brand-dark
+                         transition-colors duration-300 group-hover:text-brand-green">
+                癒シス
+            </span>
+            <span class="hidden sm:block text-[10px] tracking-super text-brand-sage
+                         border-l border-brand-sand pl-3 font-sans">
+                IYASHISU
+            </span>
+        </a>
+
+        <!-- デスクトップナビ -->
+        <nav class="hidden md:flex items-center gap-10 text-xs tracking-widest text-brand-dark font-sans">
+            <a href="#concept" class="nav-link hover:text-brand-green transition-colors duration-300">コンセプト</a>
+            <a href="#services" class="nav-link hover:text-brand-green transition-colors duration-300">事業内容</a>
+            <a href="#gallery"  class="nav-link hover:text-brand-green transition-colors duration-300">プロダクト</a>
+            <a href="#about"    class="nav-link hover:text-brand-green transition-colors duration-300">概要</a>
+        </nav>
+
+        <!-- CTAボタン -->
+        <div class="hidden sm:block">
+            <a href="#services" class="btn-primary text-[11px] shadow-sm">
+                <span>ONLINE SHOP</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+            </a>
+        </div>
+
+        <!-- ハンバーガーボタン -->
+        <button id="menu-btn" class="md:hidden text-brand-dark focus:outline-none"
+                aria-label="メニューを開く" aria-expanded="false">
+            <i class="fa-solid fa-bars-staggered text-xl"></i>
+        </button>
+    </div>
+
+    <!-- モバイルメニュー -->
+    <div id="mobile-menu"
+         class="hidden md:hidden absolute top-full left-0 w-full
+                bg-brand-light/98 backdrop-blur-xl border-b border-brand-beige
+                px-6 py-10 flex flex-col gap-7 text-center text-xs tracking-widest">
+        <a href="#concept" class="hover:text-brand-green transition-colors duration-300 py-1 block" onclick="closeMenu()">コンセプト</a>
+        <a href="#services" class="hover:text-brand-green transition-colors duration-300 py-1 block" onclick="closeMenu()">事業内容</a>
+        <a href="#gallery"  class="hover:text-brand-green transition-colors duration-300 py-1 block" onclick="closeMenu()">プロダクト</a>
+        <a href="#about"    class="hover:text-brand-green transition-colors duration-300 py-1 block" onclick="closeMenu()">概要</a>
+        <div class="pt-2">
+            <a href="#services" class="btn-primary justify-center w-full max-w-xs mx-auto" onclick="closeMenu()">
+                <span>ONLINE SHOP</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+
+<!-- ============================================================
+     ヒーローセクション
+============================================================ -->
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-brand-cream">
+
+    <!-- 背景画像 -->
+    <div class="absolute inset-0 z-0 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=1920&q=85"
+             alt="ナチュラルアロマオイル"
+             class="w-full h-full object-cover opacity-20 hero-bg"
+             onerror="this.src='https://placehold.co/1920x1080/efe6d8/3e5c3d?text=Yushisu'">
+        <!-- グラデーションオーバーレイ -->
+        <div class="absolute inset-0"
+             style="background: linear-gradient(180deg, rgba(253,251,247,0.6) 0%, rgba(249,244,236,0.2) 40%, rgba(253,251,247,0.85) 100%);">
+        </div>
+    </div>
+
+    <!-- 装飾：左縦線 -->
+    <div class="absolute left-8 md:left-16 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center gap-4 z-10">
+        <div class="hero-deco-line"></div>
+        <span class="text-[9px] tracking-super text-brand-sage font-sans"
+              style="writing-mode: vertical-rl;">AROMA &amp; HANDMADE</span>
+        <div class="hero-deco-line"></div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="relative z-10 max-w-4xl mx-auto px-6 md:px-12 text-center py-32 flex flex-col items-center">
+
+        <!-- バッジ -->
+        <div class="inline-flex items-center gap-2.5 px-5 py-2 rounded-full
+                    bg-brand-sage/20 border border-brand-sage/30
+                    text-brand-green text-[10px] tracking-super font-sans mb-10">
+            <i class="fa-solid fa-wind text-[9px]"></i>
+            <span>香りと温もりで、日々に余白を</span>
+        </div>
+
+        <!-- キャッチコピー -->
+        <h1 class="font-display font-light text-brand-dark tracking-widest mb-8
+                   text-4xl md:text-6xl lg:text-7xl leading-tight md:leading-tight">
+            日々の暮らしに、<br>
+            <em class="not-italic text-gradient">心ほどける</em><br>
+            香りと温もりを。
+        </h1>
+
+        <!-- サブコピー -->
+        <p class="max-w-xl text-sm md:text-base text-brand-dark/65 leading-loose
+                  tracking-widest mb-14 font-sans font-light">
+            厳選された天然精油のアロマオイルと、手仕事の優しさを宿したハンドメイドクラフトを通じ、
+            忙しい日常を送るあなたに「ほっと息を抜ける上質な時間」をお届けします。
+        </p>
+
+        <!-- CTA -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="#services" class="btn-primary shadow-md">
+                事業内容をみる
+            </a>
+            <a href="#concept" class="btn-outline">
+                癒シスの想い
+            </a>
+        </div>
+    </div>
+
+    <!-- スクロールインジケーター -->
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10">
+        <span class="text-[9px] tracking-super text-brand-sage font-sans">SCROLL</span>
+        <div class="w-px h-14 bg-brand-sage/40 overflow-hidden rounded-full">
+            <div class="w-full h-full bg-brand-green scroll-line"></div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     コンセプトセクション
+============================================================ -->
+<section id="concept" class="py-28 md:py-40 bg-brand-light">
+    <div class="max-w-6xl mx-auto px-6 md:px-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
+
+            <!-- 左：ビジュアル -->
+            <div class="lg:col-span-5 relative concept-frame reveal">
+                <div class="overflow-hidden rounded-2xl shadow-xl aspect-[4/5]">
+                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80"
+                         alt="アロマオイルと植物の調合"
+                         class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                         onerror="this.src='https://placehold.co/800x1000/efe6d8/3e5c3d?text=Concept'">
+                </div>
+                <!-- 装飾バッジ -->
+                <div class="absolute -bottom-5 -right-5 bg-brand-cream border border-brand-beige
+                            rounded-2xl px-6 py-4 shadow-lg">
+                    <p class="font-display text-brand-green text-2xl font-light">100%</p>
+                    <p class="text-[10px] tracking-widest text-brand-dark/60 font-sans mt-0.5">NATURAL</p>
+                </div>
+            </div>
+
+            <!-- 右：テキスト -->
+            <div class="lg:col-span-7 flex flex-col justify-center">
+                <div class="reveal reveal-delay-1">
+                    <span class="text-[10px] font-sans font-semibold tracking-super text-brand-gold block mb-4">
+                        CONCEPT
+                    </span>
+                    <h2 class="font-display font-light text-brand-dark tracking-widest leading-snug mb-8
+                               text-3xl md:text-4xl lg:text-5xl">
+                        五感にそっと寄り添う<br>
+                        <span class="text-brand-green">「癒シス」</span>の約束
+                    </h2>
+                </div>
+
+                <div class="space-y-5 text-sm md:text-base text-brand-dark/70 leading-loose
+                            tracking-wide font-sans font-light reveal reveal-delay-2">
+                    <p>
+                        目まぐるしく過ぎ去る日々のなかで、自分自身をいたわる時間を忘れていませんか？
+                    </p>
+                    <p>
+                        「癒シス（イヤシス）」は、厳選した天然植物の力を借りて、心と身体の波長を心地よく整えるアロマオイルを一本一本丁寧に企画・調香しています。
+                    </p>
+                    <p>
+                        手作りのぬくもりを宿したハンドメイド作品は、暮らしに彩りと穏やかな空気感をもたらします。ただそこにあるだけで、ふわりと空間が和らぐような、特別なプロダクトをお届けします。
+                    </p>
+                </div>
+
+                <!-- こだわり3点 -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12 pt-10
+                            border-t border-brand-beige reveal reveal-delay-3">
+                    <div class="group">
+                        <div class="w-8 h-8 rounded-full bg-brand-mist flex items-center justify-center mb-3
+                                    group-hover:bg-brand-sage/30 transition-colors duration-300">
+                            <i class="fa-solid fa-leaf text-brand-green text-xs"></i>
+                        </div>
+                        <h4 class="font-serif text-brand-dark font-semibold text-sm mb-2 tracking-wide">
+                            100% 天然素材
+                        </h4>
+                        <p class="text-xs text-brand-dark/60 leading-relaxed font-sans">
+                            人工香料を一切使用せず、大自然が育んだピュアな植物の香りだけを閉じ込めます。
+                        </p>
+                    </div>
+                    <div class="group">
+                        <div class="w-8 h-8 rounded-full bg-brand-mist flex items-center justify-center mb-3
+                                    group-hover:bg-brand-sage/30 transition-colors duration-300">
+                            <i class="fa-solid fa-hand-holding-heart text-brand-green text-xs"></i>
+                        </div>
+                        <h4 class="font-serif text-brand-dark font-semibold text-sm mb-2 tracking-wide">
+                            手仕事の温もり
+                        </h4>
+                        <p class="text-xs text-brand-dark/60 leading-relaxed font-sans">
+                            一つひとつ心を込めて手作業で仕立てる、世界にひとつだけのクラフトアイテム。
+                        </p>
+                    </div>
+                    <div class="group">
+                        <div class="w-8 h-8 rounded-full bg-brand-mist flex items-center justify-center mb-3
+                                    group-hover:bg-brand-sage/30 transition-colors duration-300">
+                            <i class="fa-solid fa-wind text-brand-green text-xs"></i>
+                        </div>
+                        <h4 class="font-serif text-brand-dark font-semibold text-sm mb-2 tracking-wide">
+                            日常への余白
+                        </h4>
+                        <p class="text-xs text-brand-dark/60 leading-relaxed font-sans">
+                            お部屋に置くだけで雰囲気が和らぎ、心がリフレッシュされるデザインにこだわります。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     事業内容セクション
+============================================================ -->
+<section id="services" class="py-28 md:py-40"
+         style="background: linear-gradient(180deg, #F9F4EC 0%, #FDFBF7 100%);">
+    <div class="max-w-6xl mx-auto px-6 md:px-12">
+
+        <!-- セクションヘッダー -->
+        <div class="text-center mb-20 reveal">
+            <span class="text-[10px] font-sans font-semibold tracking-super text-brand-gold block mb-4">
+                OUR BUSINESS
+            </span>
+            <h2 class="font-display font-light text-brand-dark tracking-widest
+                       text-3xl md:text-5xl">
+                癒シスの事業について
+            </h2>
+            <span class="section-rule"></span>
+        </div>
+
+        <!-- カード3列 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- 事業1: アロマオイル -->
+            <div class="service-card bg-white rounded-3xl overflow-hidden flex flex-col
+                        border border-brand-beige/60 reveal reveal-delay-1">
+                <div class="relative overflow-hidden" style="aspect-ratio: 4/3;">
+                    <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=600&q=80"
+                         alt="アロマオイルボトル"
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://placehold.co/600x450/efe6d8/3e5c3d?text=Aroma+Oil'">
+                    <div class="absolute inset-0"
+                         style="background: linear-gradient(to top, rgba(43,56,41,0.3) 0%, transparent 50%);"></div>
+                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-brand-green
+                                px-3 py-1 rounded-full text-[9px] tracking-widest font-sans font-semibold shadow-sm">
+                        PRODUCTION
+                    </div>
+                </div>
+                <div class="p-8 flex-1 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-serif text-brand-dark font-semibold tracking-wider mb-4 text-base">
+                            アロマオイルの企画、制作、販売
+                        </h3>
+                        <p class="text-sm text-brand-dark/65 leading-relaxed font-sans font-light mb-6">
+                            日常の様々なシーン（リラックス・集中・眠りなど）に合わせたオリジナルブレンドエッセンシャルオイルを企画・調香。心にすっと馴染む上質な香りを追求しています。
+                        </p>
+                    </div>
+                    <ul class="space-y-2.5 border-t border-brand-beige pt-5">
+                        <li class="flex items-center gap-2.5 text-xs text-brand-green font-sans font-medium">
+                            <i class="fa-solid fa-leaf text-[9px]"></i>
+                            オーガニック100%精油使用
+                        </li>
+                        <li class="flex items-center gap-2.5 text-xs text-brand-green font-sans font-medium">
+                            <i class="fa-solid fa-leaf text-[9px]"></i>
+                            シーン別オリジナルブレンド
+                        </li>
+                        <li class="flex items-center gap-2.5 text-xs text-brand-green font-sans font-medium">
+                            <i class="fa-solid fa-leaf text-[9px]"></i>
+                            企業・サロン様向け調香（OEM）
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 事業2: ECサイト -->
+            <div class="service-card bg-white rounded-3xl overflow-hidden flex flex-col
+                        border border-brand-beige/60 reveal reveal-delay-2">
+                <div class="relative overflow-hidden" style="aspect-ratio: 4/3;">
+                    <img src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=600&q=80"
+                         alt="オンラインショッピングイメージ"
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://placehold.co/600x450/efe6d8/3e5c3d?text=Online+Shop'">
+                    <div class="absolute inset-0"
+                         style="background: linear-gradient(to top, rgba(43,56,41,0.3) 0%, transparent 50%);"></div>
+                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-brand-green
+                                px-3 py-1 rounded-full text-[9px] tracking-widest font-sans font-semibold shadow-sm">
+                        EC PLATFORM
+                    </div>
+                </div>
+                <div class="p-8 flex-1 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-serif text-brand-dark font-semibold tracking-wider mb-4 text-base">
+                            ECサイトの運営
+                        </h3>
+                        <p class="text-sm text-brand-dark/65 leading-relaxed font-sans font-light mb-6">
+                            「癒シス」公式オンラインショップを運営。全国どこからでも私たちのプロダクトを気軽にお買い求めいただけます。ただ販売するだけでなく、暮らしに役立つ香りの情報発信も行っています。
+                        </p>
+                    </div>
+                    <div class="border-t border-brand-beige pt-5">
+                        <a href="#" class="inline-flex items-center gap-2 text-xs text-brand-gold
+                                          hover:text-brand-green font-sans font-semibold tracking-wider
+                                          transition-colors duration-300 group">
+                            <span>ONLINE STORE はこちら</span>
+                            <i class="fa-solid fa-arrow-right text-[10px] transition-transform duration-300 group-hover:translate-x-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 事業3: ハンドメイド -->
+            <div class="service-card bg-white rounded-3xl overflow-hidden flex flex-col
+                        border border-brand-beige/60 reveal reveal-delay-3">
+                <div class="relative overflow-hidden" style="aspect-ratio: 4/3;">
+                    <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80"
+                         alt="アロマワックスバー"
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://placehold.co/600x450/efe6d8/3e5c3d?text=Handmade+Craft'">
+                    <div class="absolute inset-0"
+                         style="background: linear-gradient(to top, rgba(43,56,41,0.3) 0%, transparent 50%);"></div>
+                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-brand-green
+                                px-3 py-1 rounded-full text-[9px] tracking-widest font-sans font-semibold shadow-sm">
+                        HANDMADE
+                    </div>
+                </div>
+                <div class="p-8 flex-1 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-serif text-brand-dark font-semibold tracking-wider mb-4 text-base">
+                            ハンドメイドの企画、制作、販売
+                        </h3>
+                        <p class="text-sm text-brand-dark/65 leading-relaxed font-sans font-light mb-6">
+                            天然ドライフラワーを用いたアロマワックスサシェや、炎の揺らぎを楽しむソイキャンドルなど、目でも香りでも楽しめるハンドメイド雑貨を企画・制作しています。
+                        </p>
+                    </div>
+                    <ul class="space-y-2.5 border-t border-brand-beige pt-5">
+                        <li class="flex items-center gap-2.5 text-xs text-brand-green font-sans font-medium">
+                            <i class="fa-solid fa-hand-holding-heart text-[9px]"></i>
+                            一品ずつ丁寧に完全手作り
+                        </li>
+                        <li class="flex items-center gap-2.5 text-xs text-brand-green font-sans font-medium">
+                            <i class="fa-solid fa-hand-holding-heart text-[9px]"></i>
+                            植物本来の美しさを引き立てるデザイン
+                        </li>
+                        <li class="flex items-center gap-2.5 text-xs text-brand-green font-sans font-medium">
+                            <i class="fa-solid fa-hand-holding-heart text-[9px]"></i>
+                            ギフトに最適なパッケージデザイン
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     プロダクト・ギャラリー
+============================================================ -->
+<section id="gallery" class="py-28 md:py-40 bg-brand-light">
+    <div class="max-w-6xl mx-auto px-6 md:px-12">
+
+        <!-- セクションヘッダー -->
+        <div class="text-center mb-20 reveal">
+            <span class="text-[10px] font-sans font-semibold tracking-super text-brand-gold block mb-4">
+                GALLERY
+            </span>
+            <h2 class="font-display font-light text-brand-dark tracking-widest
+                       text-3xl md:text-5xl">
+                癒しを彩るプロダクト
+            </h2>
+            <span class="section-rule"></span>
+        </div>
+
+        <!-- マソンリー風ギャラリー -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+
+            <!-- アイテム1：縦長（2行分） -->
+            <div class="gallery-item relative overflow-hidden rounded-2xl shadow-sm row-span-2 reveal reveal-delay-1"
+                 style="aspect-ratio: 1/2;">
+                <img src="monicore-essential-oils-2385087.jpg"
+                     alt="エッセンシャルオイルブレンド"
+                     class="w-full h-full object-cover"
+                     onerror="this.src='https://placehold.co/500x1000/f9f4ec/3e5c3d?text=Essential+Oil'">
+                <div class="overlay absolute inset-0 flex items-end p-6">
+                    <div class="text-white">
+                        <span class="text-[9px] tracking-super uppercase text-brand-gold font-sans">Aroma Oil</span>
+                        <h4 class="font-display text-sm tracking-wider mt-1">オリジナルブレンド「木漏れ日」</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- アイテム2 -->
+            <div class="gallery-item relative overflow-hidden rounded-2xl shadow-sm reveal reveal-delay-2"
+                 style="aspect-ratio: 1/1;">
+                <img src="noname_13-tea-light-2692556.jpg"
+                     alt="ソイキャンドル"
+                     class="w-full h-full object-cover"
+                     onerror="this.src='https://placehold.co/500x500/f9f4ec/3e5c3d?text=Soy+Candle'">
+                <div class="overlay absolute inset-0 flex items-end p-5">
+                    <div class="text-white">
+                        <span class="text-[9px] tracking-super uppercase text-brand-gold font-sans">Handmade</span>
+                        <h4 class="font-display text-sm tracking-wider mt-1">天然ソイワックスキャンドル</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- アイテム3 -->
+            <div class="gallery-item relative overflow-hidden rounded-2xl shadow-sm reveal reveal-delay-3"
+                 style="aspect-ratio: 1/1;">
+                <img src="https://images.unsplash.com/photo-1543257580-7269da773bf5?auto=format&fit=crop&w=500&q=80"
+                     alt="ドライフラワーサシェ"
+                     class="w-full h-full object-cover"
+                     onerror="this.src='https://placehold.co/500x500/f9f4ec/3e5c3d?text=Dry+Flower+Sachet'">
+                <div class="overlay absolute inset-0 flex items-end p-5">
+                    <div class="text-white">
+                        <span class="text-[9px] tracking-super uppercase text-brand-gold font-sans">Handmade</span>
+                        <h4 class="font-display text-sm tracking-wider mt-1">ハーブ薫るアロマサシェ</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- アイテム4：横長（2列分） -->
+            <div class="gallery-item relative overflow-hidden rounded-2xl shadow-sm col-span-2 reveal reveal-delay-4"
+                 style="aspect-ratio: 2/1;">
+                <img src="https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=1000&q=80"
+                     alt="パロサントとお香"
+                     class="w-full h-full object-cover"
+                     onerror="this.src='https://placehold.co/1000x500/f9f4ec/3e5c3d?text=Palo+Santo'">
+                <div class="overlay absolute inset-0 flex items-end p-6">
+                    <div class="text-white">
+                        <span class="text-[9px] tracking-super uppercase text-brand-gold font-sans">Lifestyle</span>
+                        <h4 class="font-display text-sm tracking-wider mt-1">瞑想と浄化のためのパロサント</h4>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     概要セクション
+============================================================ -->
+<section id="about" class="py-28 md:py-40"
+         style="background: linear-gradient(180deg, #FDFBF7 0%, #F9F4EC 100%);">
+    <div class="max-w-4xl mx-auto px-6 md:px-12">
+
+        <!-- セクションヘッダー -->
+        <div class="text-center mb-20 reveal">
+            <span class="text-[10px] font-sans font-semibold tracking-super text-brand-gold block mb-4">
+                OVERVIEW
+            </span>
+            <h2 class="font-display font-light text-brand-dark tracking-widest
+                       text-3xl md:text-5xl">
+                事業概要
+            </h2>
+            <span class="section-rule"></span>
+        </div>
+
+        <!-- 情報テーブル -->
+        <div class="bg-white rounded-3xl shadow-sm border border-brand-beige/70
+                    overflow-hidden reveal reveal-delay-1">
+
+            <div class="info-row grid grid-cols-1 md:grid-cols-4 gap-0
+                        border-b border-brand-beige/60">
+                <div class="px-8 py-6 bg-brand-cream/50 font-serif text-brand-dark
+                            font-semibold tracking-widest text-sm flex items-center">
+                    屋号
+                </div>
+                <div class="md:col-span-3 px-8 py-6 text-brand-dark/75 tracking-wide
+                            font-sans text-sm flex items-center">
+                    癒シス (YUSHISU)
+                </div>
+            </div>
+
+            <div class="info-row grid grid-cols-1 md:grid-cols-4 gap-0
+                        border-b border-brand-beige/60">
+                <div class="px-8 py-6 bg-brand-cream/50 font-serif text-brand-dark
+                            font-semibold tracking-widest text-sm flex items-center">
+                    代表者
+                </div>
+                <div class="md:col-span-3 px-8 py-6 text-brand-dark/75 tracking-wide
+                            font-sans text-sm flex items-center">
+                    岡部 美穂 (Miho Okabe)
+                </div>
+            </div>
+
+            <div class="info-row grid grid-cols-1 md:grid-cols-4 gap-0
+                        border-b border-brand-beige/60">
+                <div class="px-8 py-6 bg-brand-cream/50 font-serif text-brand-dark
+                            font-semibold tracking-widest text-sm flex items-center">
+                    所在地
+                </div>
+                <div class="md:col-span-3 px-8 py-6 text-brand-dark/75 tracking-wide
+                            font-sans text-sm flex items-center">
+                    〒811-1355 福岡県福岡市南区桧原7-48-31
+                </div>
+            </div>
+
+            <div class="info-row grid grid-cols-1 md:grid-cols-4 gap-0">
+                <div class="px-8 py-6 bg-brand-cream/50 font-serif text-brand-dark
+                            font-semibold tracking-widest text-sm flex items-start pt-7">
+                    事業内容
+                </div>
+                <div class="md:col-span-3 px-8 py-6 text-brand-dark/75 tracking-wide
+                            font-sans text-sm space-y-2">
+                    <p>・アロマオイルの企画、制作、販売</p>
+                    <p>・ECサイトの運営</p>
+                    <p>・ハンドメイドの企画、制作、販売</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 地図エリア -->
+        <div class="mt-10 rounded-3xl overflow-hidden shadow-sm border border-brand-beige
+                    h-64 relative reveal reveal-delay-2">
+            <div class="absolute inset-0 bg-brand-mist/60 z-10 pointer-events-none
+                        transition-opacity duration-500 hover:opacity-0"></div>
+            <div class="w-full h-full bg-brand-cream flex flex-col items-center justify-center p-6 text-center">
+                <div class="w-12 h-12 rounded-full bg-brand-sage/20 flex items-center justify-center
+                            text-brand-green mb-4">
+                    <i class="fa-solid fa-map-location-dot text-lg"></i>
+                </div>
+                <p class="font-serif text-sm text-brand-dark tracking-wider mb-1">
+                    福岡市南区桧原7-48-31
+                </p>
+                <p class="text-xs text-brand-dark/50 tracking-widest font-sans">
+                    Fukuoka, Japan
+                </p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ============================================================
+     フッター
+============================================================ -->
+<footer class="bg-brand-dark text-brand-light">
+
+    <!-- メインフッター -->
+    <div class="max-w-6xl mx-auto px-6 md:px-12 py-16
+                flex flex-col md:flex-row justify-between items-center gap-10">
+
+        <!-- ブランドロゴ -->
+        <div class="text-center md:text-left">
+            <h3 class="font-display text-3xl tracking-ultra text-white mb-1">癒シス</h3>
+            <p class="text-[10px] tracking-super text-brand-light/50 font-sans">
+                IYASHISU | AROMA &amp; HANDMADE
+            </p>
+        </div>
+
+        <!-- ナビリンク -->
+        <nav class="flex flex-wrap justify-center gap-8 text-xs tracking-widest
+                    text-brand-light/70 font-sans">
+            <a href="#concept"  class="footer-link hover:text-brand-gold transition-colors duration-300">コンセプト</a>
+            <a href="#services" class="footer-link hover:text-brand-gold transition-colors duration-300">事業内容</a>
+            <a href="#gallery"  class="footer-link hover:text-brand-gold transition-colors duration-300">プロダクト</a>
+            <a href="#about"    class="footer-link hover:text-brand-gold transition-colors duration-300">概要</a>
+        </nav>
+
+        <!-- SNSアイコン -->
+        <div class="flex gap-3">
+            <a href="#"
+               class="w-10 h-10 rounded-full border border-white/15 hover:border-brand-gold/60
+                      text-brand-light/70 hover:text-brand-gold flex items-center justify-center
+                      transition-all duration-300"
+               aria-label="Instagram">
+                <i class="fa-brands fa-instagram text-sm"></i>
+            </a>
+            <a href="#"
+               class="w-10 h-10 rounded-full border border-white/15 hover:border-brand-gold/60
+                      text-brand-light/70 hover:text-brand-gold flex items-center justify-center
+                      transition-all duration-300"
+               aria-label="EC Store">
+                <i class="fa-solid fa-store text-sm"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- コピーライト -->
+    <div class="border-t border-white/8">
+        <div class="max-w-6xl mx-auto px-6 md:px-12 py-6
+                    flex flex-col sm:flex-row justify-between items-center gap-3
+                    text-[10px] tracking-wider text-brand-light/35 font-sans">
+            <p>© 2026 癒シス. All rights reserved.</p>
+            <p>Designed with Care for Beautiful Living</p>
+        </div>
+    </div>
+</footer>
+
+
+<!-- ============================================================
+     JavaScript
+============================================================ -->
+<script>
+    /* ---- スクロールフェードイン ---- */
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* ---- モバイルメニュー ---- */
+    const menuBtn    = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    function closeMenu() {
+        mobileMenu.classList.add('hidden');
+        menuBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', () => {
+            const isOpen = !mobileMenu.classList.contains('hidden');
+            mobileMenu.classList.toggle('hidden');
+            menuBtn.setAttribute('aria-expanded', String(!isOpen));
+        });
+    }
+
+    /* ---- スクロール時ヘッダー強調 ---- */
+    const header = document.getElementById('main-header');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 60) {
+            header.classList.add('shadow-lg');
+        } else {
+            header.classList.remove('shadow-lg');
+        }
+    }, { passive: true });
+</script>
+
+</body>
+</html>
